@@ -170,10 +170,10 @@ export function AntigravityConnection({ setup = false }: { setup?: boolean }) {
 						<>
 							<span className="flex items-center gap-1.5 font-ui text-xs font-medium text-foreground">
 								<GoogleIcon />
-								Google (Antigravity)
+								Google
 							</span>
 							<select
-								aria-label="Google Antigravity account"
+								aria-label="Google account"
 								value={activeAccount.id}
 								disabled={busy || pending}
 								onChange={(e) => void runAction({ action: "select", accountId: e.target.value }, true)}
@@ -389,7 +389,7 @@ export function AntigravityQuotaPill({
 	if (pct === undefined) return null;
 
 	const rounded = Math.round(pct);
-	const hintLabel = `Antigravity quota: ${pct}% remaining${resetLabel ? ` (resets in ${resetLabel})` : ""} — click to refresh`;
+	const hintLabel = `Google quota: ${pct}% remaining${resetLabel ? ` (resets in ${resetLabel})` : ""} — click to refresh`;
 
 	return (
 		<Hint label={hintLabel} side="bottom">

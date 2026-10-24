@@ -53,5 +53,5 @@ jobs:
             echo "No installer files found in dist/"
             exit 1
           fi
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG (Antigravity Edition)" --notes "LearnHarness $TAG with Google Antigravity OAuth, Gemini 4 Argon (High) auto-selection, and live quota display."
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --notes "LearnHarness $TAG with Google OAuth login, Gemini 4 Argon (High) auto-selection, and live quota display."
           gh release upload "$TAG" "${files[@]}" --clobber

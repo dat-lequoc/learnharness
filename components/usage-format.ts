@@ -49,5 +49,6 @@ export function prettyModel(id: string, qualified = false): string {
 	// No auto-capitalization, dashes KEPT (owner rounds 4-5, 2026-10-05):
 	// model names render exactly as their providers write them.
 	const pretty = trimmed.join("-");
-	return qualified && provider ? `${pretty} · ${provider}` : pretty;
+	const displayProvider = provider === "antigravity" ? "google" : provider;
+	return qualified && displayProvider ? `${pretty} · ${displayProvider}` : pretty;
 }

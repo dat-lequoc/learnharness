@@ -467,7 +467,7 @@ export function dshImportAvailable(): boolean {
 export function importDshAntigravityAccounts(): { imported: number; activeAccountId: string | null } {
 	const dshDoc = readAccountDocument(dshStoreFilePath());
 	if (!dshDoc.accounts.length) {
-		throw new Error("No saved Antigravity accounts found in ~/.dsh/storages/antigravity-oauth.json.");
+		throw new Error("No saved Google accounts found.");
 	}
 	const local = readAccountDocument();
 	let imported = 0;
@@ -682,7 +682,7 @@ async function ensureActiveCredentials(accountId?: string): Promise<{
 	const targetId = accountId ?? doc.activeAccountId;
 	const account = doc.accounts.find((a) => a.id === targetId);
 	if (!account) {
-		throw new Error("No active Google Antigravity account. Sign in under Settings → Providers.");
+		throw new Error("No active Google account. Sign in under Settings → Providers.");
 	}
 	if (!account.credentials.access || account.credentials.expires <= Date.now() + 60_000) {
 		const refreshed = await refreshAccountCredentials(account);
@@ -1517,7 +1517,7 @@ export const antigravityStream: StreamFunction<Api, SimpleStreamOptions> = (logi
 
 			if (!response || !response.ok || !response.body) {
 				throw new Error(
-					`Antigravity error (${response?.status ?? "network"}): ${lastErrorText.slice(0, 300) || "request failed"}`,
+					`Google error (${response?.status ?? "network"}): ${lastErrorText.slice(0, 300) || "request failed"}`,
 				);
 			}
 
