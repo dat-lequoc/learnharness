@@ -1661,7 +1661,7 @@ export function sumSteps(steps: readonly CallUsage[]): CallUsage {
 /** One model call's inferred cost in USD — null when the model is unknown
  *  or the usage fields are absent (never guess a price). Cached input bills
  *  at the cache-read rate; cache writes bill separately where priced. */
-export function isChatGPTPlan(model: string | undefined): boolean { return model?.startsWith("chatgpt:") === true; }
+export function isChatGPTPlan(model: string | undefined): boolean { return model?.startsWith("chatgpt:") === true || model?.startsWith("antigravity:") === true; }
 
 export function callCost(
 	usage: { inputTokens?: number; outputTokens?: number; cacheReadTokens?: number; cacheWriteTokens?: number },

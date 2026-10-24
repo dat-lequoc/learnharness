@@ -1,0 +1,57 @@
+name: Fork Release (macOS & Windows)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to upload assets to (e.g. v0.3.5)"
+        required: false
+        default: "v0.3.5"
+
+permissions:
+  contents: write
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  package:
+    name: Build (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2025
+            platform: windows-x64
+            builder_args: --win --x64 --publish never
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/build-server.mjs
+      - name: Package desktop installer
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder ${{ matrix.builder_args }}
+      - name: Upload installers to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag || 'v0.3.5' }}
+        run: |
+          shopt -s nullglob
+          files=(dist/*.exe dist/*.dmg dist/*.zip dist/*.blockmap dist/latest*.yml)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No installer files found in dist/"
+            exit 1
+          fi
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG (Antigravity Edition)" --notes "LearnHarness $TAG with Google Antigravity OAuth, Gemini 4 Argon (High) auto-selection, and live quota display."
+          gh release upload "$TAG" "${files[@]}" --clobber

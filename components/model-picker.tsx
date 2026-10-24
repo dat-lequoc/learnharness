@@ -10,6 +10,7 @@ import { MenuShell } from "@/components/menu-shell";
 import { Hint } from "@/components/ui/hint";
 import { notifySettingsSaved, onSettingsSaved, useSettingsSaved } from "@/components/settings-signal";
 import { defaultOrderLevel, populateLevel, THINKING_LABEL } from "@/components/thinking-default";
+import { AntigravityQuotaPill } from "@/components/settings/antigravity-connection";
 
 /** GET /api/models is cached per page load for instant menu opens, but
  *  the federation is LIVE per call — keys saved mid-session widen the
@@ -296,7 +297,10 @@ export function ModelControl({ chatId }: { chatId?: string }) {
 		// never re-enter through this door. (The DERIVED display level never
 		// rides — it belongs to the OLD model; the fresh pick's level comes
 		// from the fresh model's own ladder.)
-		const nextLevel = populateLevel(storedLevel, m.supportedLevels);
+		const nextLevel =
+			m.provider === "antigravity" && !storedLevel && m.supportedLevels.includes("high")
+				? "high"
+				: populateLevel(storedLevel, m.supportedLevels);
 		apply(m.provider, m.id, nextLevel);
 	};
 
@@ -366,6 +370,7 @@ export function ModelControl({ chatId }: { chatId?: string }) {
 				<span aria-hidden className="text-xs text-muted-foreground">▾</span>
 			</button>
 			</Hint>
+			<AntigravityQuotaPill provider={effectiveProvider} modelId={effectiveId} />
 
 			{/* The shared dropdown body (extracted 2026-09-20): the agent
 			    settings' slot selects and the setup dialog use the exact same

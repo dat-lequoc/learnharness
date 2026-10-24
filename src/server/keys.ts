@@ -53,6 +53,7 @@ import {
 } from "../core/auth-keys.ts";
 import { authStore } from "../store/auth.ts";
 import { chatGPTConnected } from "../agent/chatgpt-bridge.ts";
+import { antigravityConnected } from "../agent/antigravity.ts";
 
 // The once-per-process boot record — globalThis anchor (HMR re-imports the
 // module; the snapshot must not re-run and misread fill-gapped vars as real
@@ -202,6 +203,7 @@ export function keyValue(id: string): string | undefined {
  * no key at all: nothing to gate, present by definition. */
 export function providerKeyPresent(provider: string): boolean {
 	if (provider === "chatgpt") return chatGPTConnected();
+	if (provider === "antigravity") return antigravityConnected();
 	const info = AUTH_PROVIDER_KEYS.find((p) => p.id === provider);
 	return info ? keyValue(info.envVar) !== undefined : true;
 }

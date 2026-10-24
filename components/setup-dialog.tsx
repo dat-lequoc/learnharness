@@ -45,6 +45,7 @@ import { Hint } from "@/components/ui/hint";
 import { type ProviderKeyInfo } from "@/components/settings/keys-section";
 import { ProviderMenuList } from "@/components/settings/model-menu";
 import { ChatGPTBackgroundAccess, ChatGPTConnection } from "@/components/settings/chatgpt-connection";
+import { AntigravityConnection } from "@/components/settings/antigravity-connection";
 import { defaultOrderLevel, populateLevel, THINKING_LABEL } from "@/components/thinking-default";
 import { ThinkingMenuList } from "@/components/settings/model-menu";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
@@ -211,7 +212,10 @@ export function SetupKeysBody({
 					</p>
 				)}
 			</div>
-			<div className="mt-2 border-t border-border/60 pt-4"><ChatGPTConnection setup /></div>
+			<div className="mt-2 flex flex-col gap-3 border-t border-border/60 pt-4">
+				<AntigravityConnection setup />
+				<ChatGPTConnection setup />
+			</div>
 		</div>
 	);
 }
